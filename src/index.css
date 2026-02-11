@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-pixelify: "Pixelify Sans", sans-serif;
+  --color-retro-red: #851818;
+  --color-retro-gold: #BAA639;
+  --color-glass-dark: rgba(0, 0, 0, 0.75);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-pixelify);
+    @apply transition-all duration-700 ease-in-out antialiased overflow-hidden bg-black text-white;
+  }
+}
+
+@layer utilities {
+  .poke-title-stroke {
+    color: #851818;
+    /* This creates the yellow margin/stroke effect */
+    -webkit-text-stroke: 4px #BAA639;
+    paint-order: stroke fill;
+    font-weight: 700;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { 
+    @apply bg-retro-red/40 rounded-full hover:bg-retro-red/80 transition-colors; 
+  }
+}
