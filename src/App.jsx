@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import SideBar from './components/SideBar';
 import Chats from './components/Chats';
 import { createChat } from './lib/gemini';
@@ -22,8 +22,6 @@ const App = () => {
   });
 
   // Gemini chat sessions per bot
-  const chatSessionsRef = useRef({});
-
   // Initialize all chat sessions
   const initAllSessions = (tone) => {
     const sessions = {};
@@ -33,10 +31,15 @@ const App = () => {
     chatSessionsRef.current = sessions;
   };
 
-  // Initialize sessions on mount
-  useEffect(() => {
-    initAllSessions(selectedTone);
-  }, []);
+  // Initialize sessions immediately (not in useEffect) so they're ready on first render
+  const chatSessionsRef = useRef(null);
+  if (!chatSessionsRef.current) {
+    const sessions = {};
+    BOTS.forEach(bot => {
+      sessions[bot.name] = createChat(bot.name, "HAPPY");
+    });
+    chatSessionsRef.current = sessions;
+  }
 
   // Recreate all sessions when tone changes
   const handleToneChange = (newTone) => {

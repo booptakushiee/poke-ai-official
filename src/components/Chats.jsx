@@ -72,7 +72,7 @@ const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito,
         <div>
           <h2 className="text-white text-xl font-bold tracking-tight">{bot.name}</h2>
           <p className="text-white/40 text-[9px] font-bold uppercase tracking-[0.3em] mt-1 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full inline-block" />
             Active now
           </p>
         </div>
