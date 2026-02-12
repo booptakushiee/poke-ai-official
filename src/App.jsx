@@ -74,7 +74,7 @@ const App = () => {
 
   return (
     <div
-      className="min-h-screen w-full flex transition-all duration-1000 ease-in-out bg-cover bg-center bg-no-repeat relative"
+      className="min-h-screen w-full flex transition-all duration-1000 ease-in-out bg-cover bg-center bg-no-repeat relative animate-blur-in"
       style={{ backgroundImage: `url(${activeBot.bg})` }}
     >
       {/* Dark Overlay */}
@@ -102,7 +102,7 @@ const App = () => {
           clearChat={clearBotHistory}
         />
 
-        <main className="flex-1 flex flex-col pt-2 md:pt-0">
+        <main className="flex-1 flex flex-col pt-2 md:pt-0 animate-pop-up" style={{ animationDelay: "0.1s" }}>
           <Chats
             bot={activeBot}
             tone={selectedTone}
