@@ -117,9 +117,9 @@ const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito,
       </div>
 
       {/* Input Section */}
-      <div className="pb-6 md:pb-12">
-        <div className="relative flex items-center gap-4 bg-glass-dark backdrop-blur-2xl border-2 border-retro-red rounded-[35px] p-4 md:p-5 px-8 shadow-[0_0_30px_rgba(133,24,24,0.3)]">
-          <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileUpload} />
+      <div className="pb-4 md:pb-12 px-2 md:px-0"> {/* Added small outer padding for mobile */}
+  <div className="relative flex items-center gap-2 md:gap-4 bg-glass-dark backdrop-blur-2xl border-2 border-retro-red rounded-[35px] p-2 md:p-5 px-4 md:px-8 shadow-[0_0_40px_rgba(133,24,24,0.3)]">
+    <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileUpload} />
 
           <div className="flex items-center gap-4 shrink-0">
             <Paperclip
