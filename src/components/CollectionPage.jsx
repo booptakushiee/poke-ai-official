@@ -154,7 +154,7 @@ const CollectionPage = () => {
         <div className="collection-page min-h-screen bg-black text-white font-[family-name:var(--font-pixelify)] relative animate-blur-in">
             {/* Background with overlay */}
             <div className="absolute inset-0 z-0">
-                <img src="/pokegi.gif" alt="Background" className="w-full h-full object-cover opacity-20" />
+                <img src="/sprite3.gif" alt="Background" className="w-full h-full object-cover opacity-20" />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black"></div>
             </div>
 
