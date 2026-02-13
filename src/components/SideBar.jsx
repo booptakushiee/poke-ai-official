@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Settings, Ghost, Trash2, ArrowLeft } from 'lucide-react';
 
-const SideBar = ({ isOpen, setIsOpen, bots, activeBot, setActiveBot, selectedTone, setSelectedTone, isIncognito, toggleIncognito, clearChat }) => {
+const SideBar = ({ isOpen, setIsOpen, bots, activeBot, setActiveBot, selectedTone, setSelectedTone, isIncognito, toggleIncognito, clearChat, onSettingsClick }) => {
   const tones = ["HAPPY", "SAD", "EXCITED", "CURIOUS", "HUNGRY", "ANGRY"];
 
   return (
@@ -81,7 +81,10 @@ const SideBar = ({ isOpen, setIsOpen, bots, activeBot, setActiveBot, selectedTon
           <Ghost size={20} className={isIncognito ? 'animate-pulse' : ''} />
           {isIncognito ? "Incognito Active" : "Incognito Mode"}
         </button>
-        <button className="flex items-center gap-3 text-sm text-white/60 hover:text-retro-gold transition-all uppercase cursor-pointer py-1">
+        <button
+          onClick={onSettingsClick}
+          className="flex items-center gap-3 text-sm text-white/60 hover:text-retro-gold transition-all uppercase cursor-pointer py-1"
+        >
           <Settings size={20} /> Settings
         </button>
       </div>

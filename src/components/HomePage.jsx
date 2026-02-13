@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Palette } from 'lucide-react';
 
@@ -109,7 +109,21 @@ const HomePage = () => {
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [currentThemeIndex, setCurrentThemeIndex] = useState(0);
 
+    const [showRunningPikachu, setShowRunningPikachu] = useState(false);
+
     const theme = THEMES[currentThemeIndex];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setShowRunningPikachu(true);
+            // reset after animation ends (8s)
+            setTimeout(() => {
+                setShowRunningPikachu(false);
+            }, 8500);
+        }, 15000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     const cycleTheme = () => {
         setCurrentThemeIndex((prev) => (prev + 1) % THEMES.length);
@@ -178,16 +192,25 @@ const HomePage = () => {
             </div>
 
             {/* Customize Button */}
-            <button
-                onClick={cycleTheme}
-                className="absolute top-18 right-6 z-30 flex items-center gap-2 px-4 py-2 rounded-full border-2 bg-black/50 backdrop-blur-md hover:scale-105 transition-transform cursor-pointer group"
-                style={{ borderColor: theme.strokeColor }}
-            >
-                <Palette size={20} color={theme.strokeColor} className="group-hover:rotate-12 transition-transform" />
-                <span className="font-bold text-sm tracking-widest uppercase" style={{ color: theme.strokeColor }}>
-                    Customize Theme
-                </span>
-            </button>
+            {!showMobileMenu && (
+                <button
+                    onClick={cycleTheme}
+                    className="absolute top-[80px] md:top-18 right-6 z-30 flex items-center gap-2 px-4 py-2 rounded-full border-2 bg-black/50 backdrop-blur-md hover:scale-105 transition-transform cursor-pointer group"
+                    style={{ borderColor: theme.strokeColor }}
+                >
+                    <Palette size={20} color={theme.strokeColor} className="group-hover:rotate-12 transition-transform" />
+                    <span className="font-bold text-sm tracking-widest uppercase" style={{ color: theme.strokeColor }}>
+                        Customize Theme
+                    </span>
+                </button>
+            )}
+
+            {/* Running Pikachu */}
+            {showRunningPikachu && (
+                <div className="fixed bottom-4 left-0 z-50 pointer-events-none animate-pikachu-run">
+                    <img src="/run.gif" alt="Running Pikachu" className="w-40 h-40 object-contain" />
+                </div>
+            )}
 
             {/* Footer */}
             <div className="home-footer">

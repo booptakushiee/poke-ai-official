@@ -15,6 +15,9 @@ const App = () => {
   const [selectedTone, setSelectedTone] = useState("HAPPY");
   const [isIncognito, setIsIncognito] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [fontSize, setFontSize] = useState("text-[15px]");
+  const [bubbleOpacity, setBubbleOpacity] = useState("bg-black/50");
 
   // Separate history per bot
   const [histories, setHistories] = useState({
@@ -100,6 +103,7 @@ const App = () => {
           isIncognito={isIncognito}
           toggleIncognito={toggleIncognito}
           clearChat={clearBotHistory}
+          onSettingsClick={() => setShowSettings(true)}
         />
 
         <main className="flex-1 flex flex-col pt-2 md:pt-0 animate-pop-up" style={{ animationDelay: "0.1s" }}>
@@ -110,6 +114,12 @@ const App = () => {
             onSendMessage={(msg) => updateHistory(activeBot.name, msg)}
             isIncognito={isIncognito}
             setIsIncognito={setIsIncognito}
+            showSettings={showSettings}
+            setShowSettings={setShowSettings}
+            fontSize={fontSize}
+            setFontSize={setFontSize}
+            bubbleOpacity={bubbleOpacity}
+            setBubbleOpacity={setBubbleOpacity}
             chatSession={chatSessionsRef.current[activeBot.name]}
           />
         </main>

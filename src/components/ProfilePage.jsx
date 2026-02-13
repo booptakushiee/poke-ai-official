@@ -18,9 +18,45 @@ const ProfilePage = () => {
         stats: {
             chats: 128,
             favorites: 15,
-            streak: 45 // Example streak for testing tiers
+            streak: 1 // Default to 1, will be updated by useEffect
         }
     });
+
+    useEffect(() => {
+        const calculateStreak = () => {
+            const today = new Date().toISOString().split('T')[0];
+            const storedDate = localStorage.getItem('lastLoginDate');
+            let currentStreak = parseInt(localStorage.getItem('userStreak')) || 1;
+
+            if (storedDate) {
+                if (storedDate === today) {
+                    // Already logged in today, keep streak
+                } else {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+                    if (storedDate === yesterdayStr) {
+                        currentStreak += 1;
+                    } else {
+                        currentStreak = 1;
+                    }
+                }
+            } else {
+                currentStreak = 1;
+            }
+
+            localStorage.setItem('lastLoginDate', today);
+            localStorage.setItem('userStreak', currentStreak.toString());
+
+            setUser(prev => ({
+                ...prev,
+                stats: { ...prev.stats, streak: currentStreak }
+            }));
+        };
+
+        calculateStreak();
+    }, []);
 
     const [editForm, setEditForm] = useState(user);
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Paperclip, Mic, Zap, ArrowUp, XCircle } from 'lucide-react';
+import { Paperclip, Mic, Zap, ArrowUp, XCircle, Settings, User, Eye, EyeOff, Palette } from 'lucide-react';
 import { sendMessage } from '../lib/gemini';
 
-const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito, chatSession }) => {
+const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito, showSettings, setShowSettings, fontSize, setFontSize, bubbleOpacity, setBubbleOpacity, chatSession }) => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef(null);
@@ -62,7 +62,7 @@ const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito,
       )}
 
       {/* Header UI Fix */}
-      <div className="flex items-center gap-4 bg-black/60 backdrop-blur-xl p-4 px-8 rounded-3xl border border-white/10 w-fit shadow-2xl">
+      <div className="flex items-center gap-4 bg-black/60 backdrop-blur-xl p-4 px-8 rounded-3xl border border-white/10 w-fit shadow-2xl mb-4">
         <div className={`w-12 h-12 rounded-full ${bot.color} border-2 border-white relative overflow-hidden shadow-inner`}>
           <div className="w-full h-1/2 bg-white absolute bottom-0 border-t-2 border-black" />
           <div className="w-5 h-5 bg-white border-2 border-black rounded-full z-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
@@ -90,9 +90,9 @@ const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito,
           <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
             <div className={`max-w-[85%] md:max-w-[65%] p-4 px-7 rounded-[30px] border-2 backdrop-blur-lg shadow-2xl transition-all
               ${msg.sender === 'user'
-                ? 'rounded-tr-none border-retro-gold bg-black/50 text-white'
+                ? `rounded-tr-none border-retro-gold ${bubbleOpacity} text-white`
                 : 'rounded-tl-none border-retro-red bg-glass-dark text-white/90'}`}>
-              <p className="text-[15px] tracking-wide leading-relaxed">{msg.text}</p>
+              <p className={`${fontSize} tracking-wide leading-relaxed`}>{msg.text}</p>
             </div>
           </div>
         ))}
@@ -118,8 +118,8 @@ const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito,
 
       {/* Input Section */}
       <div className="pb-4 md:pb-12 px-2 md:px-0"> {/* Added small outer padding for mobile */}
-  <div className="relative flex items-center gap-2 md:gap-4 bg-glass-dark backdrop-blur-2xl border-2 border-retro-red rounded-[35px] p-2 md:p-5 px-4 md:px-8 shadow-[0_0_40px_rgba(133,24,24,0.3)]">
-    <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileUpload} />
+        <div className="relative flex items-center gap-2 md:gap-4 bg-glass-dark backdrop-blur-2xl border-2 border-retro-red rounded-[35px] p-2 md:p-5 px-4 md:px-8 shadow-[0_0_40px_rgba(133,24,24,0.3)]">
+          <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileUpload} />
 
           <div className="flex items-center gap-4 shrink-0">
             <Paperclip
@@ -160,6 +160,93 @@ const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito,
           Contains AI-generated responses. May not be accurate.
         </p>
       </div>
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-blur-in">
+          <div className="bg-[#1a1a1a] border-2 border-white/10 rounded-[40px] p-8 max-w-md w-full shadow-2xl animate-pop-up relative">
+            <button
+              onClick={() => setShowSettings(false)}
+              className="absolute top-6 right-6 text-white/40 hover:text-white cursor-pointer"
+            >
+              <XCircle size={24} />
+            </button>
+
+            <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+              <Settings size={24} className="text-retro-gold" />
+              Chat Settings
+            </h2>
+
+            <div className="space-y-8">
+              {/* Incognito Toggle */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-white font-bold flex items-center gap-2">
+                    {isIncognito ? <EyeOff size={16} /> : <Eye size={16} />}
+                    Incognito Mode
+                  </h4>
+                  <p className="text-xs text-white/40 mt-1">Don't save chat history</p>
+                </div>
+                <button
+                  onClick={() => setIsIncognito(!isIncognito)}
+                  className={`w-12 h-6 rounded-full transition-all relative ${isIncognito ? 'bg-cyan-500' : 'bg-white/10'}`}
+                >
+                  <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isIncognito ? 'left-7' : 'left-1'}`} />
+                </button>
+              </div>
+
+              {/* Font Size Pref */}
+              <div>
+                <h4 className="text-white font-bold flex items-center gap-2 mb-4">
+                  <span className="text-lg">A</span>
+                  Font Size
+                </h4>
+                <div className="flex bg-black/40 p-1 rounded-2xl border border-white/5">
+                  {["text-[13px]", "text-[15px]", "text-[18px]"].map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setFontSize(size)}
+                      className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${fontSize === size ? 'bg-retro-red text-white' : 'text-white/40 rounded-xl'}`}
+                    >
+                      {size === "text-[13px]" ? "Small" : size === "text-[15px]" ? "Normal" : "Large"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bubble Style */}
+              <div>
+                <h4 className="text-white font-bold flex items-center gap-2 mb-4">
+                  <Palette size={16} />
+                  Your Bubble Style
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => setBubbleOpacity("bg-black/50")}
+                    className={`p-3 rounded-2xl border-2 transition-all ${bubbleOpacity === "bg-black/50" ? 'border-retro-gold bg-black/30' : 'border-white/5 bg-black/10'}`}
+                  >
+                    <div className="w-full h-2 bg-black/50 rounded-full mb-2" />
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Dark Glass</span>
+                  </button>
+                  <button
+                    onClick={() => setBubbleOpacity("bg-retro-gold/10")}
+                    className={`p-3 rounded-2xl border-2 transition-all ${bubbleOpacity === "bg-retro-gold/10" ? 'border-retro-gold bg-retro-gold/5' : 'border-white/5 bg-black/10'}`}
+                  >
+                    <div className="w-full h-2 bg-retro-gold/20 rounded-full mb-2" />
+                    <span className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Gold Tint</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowSettings(false)}
+              className="w-full mt-10 bg-retro-red hover:bg-retro-red/80 text-white font-bold py-4 rounded-2xl transition-all cursor-pointer"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
