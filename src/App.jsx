@@ -18,6 +18,24 @@ const App = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [fontSize, setFontSize] = useState("text-[15px]");
   const [bubbleOpacity, setBubbleOpacity] = useState("bg-black/50");
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('favoriteBots')) || [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  const toggleFavorite = (botName) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(botName)
+        ? prev.filter(name => name !== botName)
+        : [...prev, botName];
+      localStorage.setItem('favoriteBots', JSON.stringify(newFavorites));
+      localStorage.setItem('userFavoritesCount', newFavorites.length.toString());
+      return newFavorites;
+    });
+  };
 
   // Separate history per bot
   const [histories, setHistories] = useState({
@@ -73,6 +91,11 @@ const App = () => {
       ...prev,
       [botName]: [...prev[botName], newMessage]
     }));
+
+    if (newMessage.sender === 'user') {
+      const currentCount = parseInt(localStorage.getItem('userChatCount')) || 0;
+      localStorage.setItem('userChatCount', (currentCount + 1).toString());
+    }
   };
 
   return (
@@ -121,6 +144,8 @@ const App = () => {
             bubbleOpacity={bubbleOpacity}
             setBubbleOpacity={setBubbleOpacity}
             chatSession={chatSessionsRef.current[activeBot.name]}
+            isFavorite={favorites.includes(activeBot.name)}
+            onToggleFavorite={() => toggleFavorite(activeBot.name)}
           />
         </main>
       </div>

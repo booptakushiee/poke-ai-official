@@ -53,6 +53,24 @@
   }
 }
 
+@keyframes heartGlow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(133, 24, 24, 0.4));
+    transform: scale(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 10px rgba(133, 24, 24, 0.8));
+    transform: scale(1.1);
+  }
+}
+
+.animate-heart-glow {
+  animation: heartGlow 2s ease-in-out infinite;
+}
+
 @keyframes pikachuRun {
   0% {
     transform: translateX(-100px);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Paperclip, Mic, Zap, ArrowUp, XCircle, Settings, User, Eye, EyeOff, Palette } from 'lucide-react';
+import { Paperclip, Mic, Zap, ArrowUp, XCircle, Settings, User, Eye, EyeOff, Palette, Heart } from 'lucide-react';
 import { sendMessage } from '../lib/gemini';
 
-const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito, showSettings, setShowSettings, fontSize, setFontSize, bubbleOpacity, setBubbleOpacity, chatSession }) => {
+const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito, showSettings, setShowSettings, fontSize, setFontSize, bubbleOpacity, setBubbleOpacity, chatSession, isFavorite, onToggleFavorite }) => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef(null);
@@ -76,6 +76,14 @@ const Chats = ({ bot, tone, history, onSendMessage, isIncognito, setIsIncognito,
             Active now
           </p>
         </div>
+
+        <button
+          onClick={onToggleFavorite}
+          className={`ml-4 p-2 rounded-full transition-all duration-300 cursor-pointer ${isFavorite ? 'text-retro-red' : 'text-white/20 hover:text-white/40'}`}
+          title={isFavorite ? "Unfavorite" : "Favorite"}
+        >
+          <Heart size={22} fill={isFavorite ? "currentColor" : "none"} className={isFavorite ? 'animate-heart-glow' : ''} />
+        </button>
       </div>
 
       {/* Messages with Scroll fix */}

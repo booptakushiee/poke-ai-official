@@ -16,8 +16,8 @@ const ProfilePage = () => {
         bio: "On a journey to be the very best, like no one ever was. Catching 'em all and coding AI bots in my spare time.",
         avatar: "https://i.pinimg.com/736x/bf/95/34/bf953419d76bf747cdd69b55d4cd6fb9.jpg",
         stats: {
-            chats: 128,
-            favorites: 15,
+            chats: parseInt(localStorage.getItem('userChatCount')) || 0,
+            favorites: parseInt(localStorage.getItem('userFavoritesCount')) || 0,
             streak: 1 // Default to 1, will be updated by useEffect
         }
     });
@@ -53,10 +53,18 @@ const ProfilePage = () => {
             localStorage.setItem('userStreak', currentStreak.toString());
             localStorage.setItem('totalLoginDays', totalDays.toString());
 
+            const userChatCount = parseInt(localStorage.getItem('userChatCount')) || 0;
+            const userFavoritesCount = parseInt(localStorage.getItem('userFavoritesCount')) || 0;
+
             setUser(prev => ({
                 ...prev,
                 level: totalDays,
-                stats: { ...prev.stats, streak: currentStreak }
+                stats: {
+                    ...prev.stats,
+                    streak: currentStreak,
+                    chats: userChatCount,
+                    favorites: userFavoritesCount
+                }
             }));
         };
 
