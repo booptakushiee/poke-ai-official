@@ -51,6 +51,10 @@
   .animate-pikachu-run {
     animation: pikachuRun 8s linear forwards;
   }
+
+  .animate-squeeze {
+    animation: squeeze 2s ease-in-out infinite;
+  }
 }
 
 @keyframes heartGlow {
@@ -69,6 +73,18 @@
 
 .animate-heart-glow {
   animation: heartGlow 2s ease-in-out infinite;
+}
+
+@keyframes squeeze {
+
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+
+  50% {
+    transform: scale(1.1, 0.85);
+  }
 }
 
 @keyframes pikachuRun {

@@ -167,7 +167,7 @@ const HomePage = () => {
             {/* Hero Content */}
             <div className="home-hero">
                 <h1 className="home-title poke-title-stroke animate-pop-up" style={{ WebkitTextStrokeColor: theme.strokeColor }}>
-                    Pika?
+                    <span className="inline-block animate-squeeze">Pika?</span>
                 </h1>
                 <p className="home-subtitle animate-pop-up" style={{ animationDelay: "0.2s", color: theme.strokeColor }}>
                     Welcome to PokeAI!
