@@ -27,10 +27,11 @@ const ProfilePage = () => {
             const today = new Date().toISOString().split('T')[0];
             const storedDate = localStorage.getItem('lastLoginDate');
             let currentStreak = parseInt(localStorage.getItem('userStreak')) || 1;
+            let totalDays = parseInt(localStorage.getItem('totalLoginDays')) || 1;
 
             if (storedDate) {
                 if (storedDate === today) {
-                    // Already logged in today, keep streak
+                    // Already logged in today, keep streak and total days
                 } else {
                     const yesterday = new Date();
                     yesterday.setDate(yesterday.getDate() - 1);
@@ -41,16 +42,20 @@ const ProfilePage = () => {
                     } else {
                         currentStreak = 1;
                     }
+                    totalDays += 1;
                 }
             } else {
                 currentStreak = 1;
+                totalDays = 1;
             }
 
             localStorage.setItem('lastLoginDate', today);
             localStorage.setItem('userStreak', currentStreak.toString());
+            localStorage.setItem('totalLoginDays', totalDays.toString());
 
             setUser(prev => ({
                 ...prev,
+                level: totalDays,
                 stats: { ...prev.stats, streak: currentStreak }
             }));
         };
@@ -84,7 +89,12 @@ const ProfilePage = () => {
     };
 
     const handleSave = () => {
-        setUser(editForm);
+        setUser(prev => ({
+            ...prev,
+            ...editForm,
+            stats: prev.stats, // Preserve current real-time stats
+            level: prev.level  // Preserve current real-time level
+        }));
         setIsEditing(false);
     };
 
